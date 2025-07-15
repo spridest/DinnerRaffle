@@ -8,10 +8,16 @@
 </head>
 <body>
   <h1>🎯 抽獎轉盤系統</h1>
+
+  <label for="prizeInput">請輸入獎項（用逗號分隔）：</label><br>
+  <textarea id="prizeInput" rows="3" cols="40"></textarea><br>
+  <button id="saveBtn">💾 儲存獎項</button>
+
   <div class="wheel-container">
     <div class="wheel" id="wheel"></div>
     <div class="pointer">▼</div>
   </div>
+
   <button id="spinBtn">開始抽獎</button>
   <p id="result"></p>
 

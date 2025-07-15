@@ -1,19 +1,40 @@
 const wheel = document.getElementById("wheel");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spinBtn");
+const prizeInput = document.getElementById("prizeInput");
+const saveBtn = document.getElementById("saveBtn");
 
-// 對應每個角度區段的獎品
-const prizes = ["iPhone", "AirPods", "電動牙刷", "再接再厲", "Switch", "100元禮券"];
-
+let prizes = []; // 儲存獎項
 let spinning = false;
 
+// 從 localStorage 載入獎項
+function loadPrizes() {
+  const saved = localStorage.getItem("prizeList");
+  if (saved) {
+    prizes = saved.split(",").map(p => p.trim()).filter(p => p);
+    prizeInput.value = prizes.join(", ");
+  }
+}
+
+// 儲存獎項到 localStorage
+function savePrizes() {
+  const input = prizeInput.value;
+  prizes = input.split(",").map(p => p.trim()).filter(p => p);
+  localStorage.setItem("prizeList", prizes.join(","));
+  alert("✅ 獎項已儲存！");
+}
+
+saveBtn.addEventListener("click", savePrizes);
+
 spinBtn.addEventListener("click", () => {
-  if (spinning) return;
+  if (spinning || prizes.length === 0) {
+    alert("請先設定並儲存至少一個獎項！");
+    return;
+  }
 
   spinning = true;
   result.textContent = "";
 
-  // 隨機角度（至少轉幾圈 + 停在某一格）
   const segment = 360 / prizes.length;
   const randIndex = Math.floor(Math.random() * prizes.length);
   const endDeg = 360 * 5 + (360 - randIndex * segment - segment / 2);
@@ -25,3 +46,6 @@ spinBtn.addEventListener("click", () => {
     spinning = false;
   }, 4000);
 });
+
+// 初始載入
+loadPrizes();
